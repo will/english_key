@@ -8,6 +8,6 @@ describe EnglishKey, '.uuid' do
   end
 
   it 'is a collection of words' do
-    key.should =~ /\A\w+\Z/
+    key.should =~ /\A\w+\z/
   end
 end
