@@ -31,6 +31,16 @@ describe RFC1751, 'encode / decode' do
         RFC1751.decode(str).should == hex
       end
     end
+
+    it 'is stable' do
+      ok_phrase = 'YOU CAN BUY WILL A CAT'
+      RFC1751.encode(RFC1751.decode(ok_phrase)).should == ok_phrase
+    end
+
+    it 'detects checksum errors' do
+      ok_phrase = 'YOU CAN BUY WILL A CAR'
+      expect{ RFC1751.decode(ok_phrase) }.to raise_error(RFC1751::ChecksumError)
+    end
   end
 end
 

@@ -2,6 +2,9 @@ require_relative 'rfc1751_words'
 module EnglishKey
   module RFC1751
     extend self
+
+    ChecksumError = Class.new(ArgumentError)
+
     def encode(num)
       split_64bit(num).map {|part| encode_64bit part }.join ' '
     end
@@ -26,10 +29,13 @@ module EnglishKey
 
       keys = bits.each_slice(11).map {|bit_array| base_array_to_int(bit_array, 2) }
 
-      checksum = (0..63).step(2).inject(0) { |sum,j| sum + 2*num[j+1] + num[j] }
-      keys[5] = (keys[5] << 2) + (checksum & 3)
+      keys[5] = (keys[5] << 2) + checksum(num)
 
       keys.map {|idx| WORDS[idx] }
+    end
+
+    def checksum(num)
+      (0..63).step(2).inject(0) { |sum,j| sum + 2*num[j+1] + num[j] } & 3
     end
 
     def decode_phrases(words)
@@ -37,8 +43,10 @@ module EnglishKey
     end
 
     def decode_phrase(phrase)
-      phrase.map!{|word| WORDS.index word}
-      phrase.inject(0) { |sum, n| (sum << 11) + n } >> 2
+      nums = phrase.map{|word| WORDS.index word}
+      decoded = nums.inject(0) { |sum, n| (sum << 11) + n } >> 2
+      raise ChecksumError unless (nums.last & 3) == checksum(decoded)
+      decoded
     end
 
     def base_array_to_int(arry, base)
