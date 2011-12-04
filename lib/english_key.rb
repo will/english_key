@@ -2,6 +2,8 @@ require 'securerandom'
 require_relative 'english_key/rfc1751'
 
 module EnglishKey
+  VERSION = '0.1.0'
+
   extend self
   def uuid
     encode(SecureRandom.random_number(2**128 - 1)).tr(' ', '_')
