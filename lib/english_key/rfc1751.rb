@@ -3,16 +3,19 @@ module EnglishKey
   module RFC1751
     extend self
     def encode(num)
-      parts = []
-      while num > 0
-        parts.unshift encode_64bit( num % 2**64 )
-        num /= 2**64
-      end
-
-      parts.join ' '
+      split_64bit(num).map {|part| encode_64bit part }.join ' '
     end
 
     private
+
+    def split_64bit(num)
+      parts = []
+      while num > 0
+        parts.unshift num % 2**64
+        num /= 2**64
+      end
+      parts
+    end
 
     def encode_64bit(num)
       bits = 63.downto(0).map{|i| num[i] }
