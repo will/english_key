@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary       = 'RFC1751 for Ruby'
   s.description   = 'RFC1751 for Ruby. A Convention for Human-Readable 128-bit Keys'
   s.homepage      = 'http://github.com/will/english_key'
-  s.files         =  Dir.glob('lib/**/*') + ['Readme.md']
+  s.files         =  Dir.glob('lib/**/*') + ['Readme.md', 'License']
   s.require_paths = ['lib']
 
   s.add_development_dependency('rspec', ['~> 2'])
