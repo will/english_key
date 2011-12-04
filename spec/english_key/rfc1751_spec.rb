@@ -38,8 +38,8 @@ describe RFC1751, 'encode / decode' do
     end
 
     it 'detects checksum errors' do
-      ok_phrase = 'YOU CAN BUY WILL A CAR'
-      expect{ RFC1751.decode(ok_phrase) }.to raise_error(RFC1751::ChecksumError)
+      bad_phrase = 'YOU CAN BUY WILL A CAR'
+      expect{ RFC1751.decode(bad_phrase) }.to raise_error(RFC1751::ChecksumError)
     end
   end
 end
